@@ -1127,7 +1127,7 @@
 *Libraries for managing code quality, formatting and linting.*
 
 * [CaptainHook](https://github.com/captainhookphp/captainhook) - An easy-to-use and flexible Git hook library. 
-* [PHP CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) - A library that detects PHP, CSS and JS coding standard violations.
+* [PHP CodeSniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) - A library that detects PHP coding standard violations.
 * [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) - A coding standards fixer library.
 * [PHP Mess Detector](https://github.com/phpmd/phpmd) - A library that scans code for bugs, sub-optimal code, unused parameters and more.
 * [PHPCheckstyle](https://github.com/PHPCheckstyle/phpcheckstyle) - A tool to help adhere to certain coding conventions.
