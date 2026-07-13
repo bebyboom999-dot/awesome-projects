@@ -42,3 +42,13 @@ MCP is an open protocol supported across a wide range of clients and servers. AI
 ## Learn more
 
 * [Understand concepts](https://modelcontextprotocol.io/docs/learn/architecture) - Learn the core concepts and architecture of MCP.
+
+## SDKs
+
+## Clients
+
+## Servers
+
+## Tools & Registries
+
+## Learning Resources
