@@ -3,6 +3,7 @@
 - [Analytics & Privacy](/doc/analytics/README.md)
 - [Cyber-Security](/doc/security/README.md)
 - [For Developer](/doc/developer/README.md)
+- [MCP (Model Context Protocol)](/doc/mcp/README.md)
 - [Flipper Zero](/doc/flipperzero/README.md)
 - [Flipper FW](/doc/flipperzero/Firmwares.md)
 - [Forensics](/doc/forensics/README.md)
