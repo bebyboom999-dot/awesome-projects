@@ -449,6 +449,7 @@
 
 ## Code Generation
 
+  * [Copilot CLI](https://githubnext.com/projects/copilot-cli/) — GitHub Copilot CLI brings AI-powered suggestions to your terminal. Use natural language to generate shell commands, explain what commands do, and get help with git. Install via `brew install gh` then `gh extension install github/gh-copilot`, or on macOS with `brew install copilot-cli`.
   * [DhiWise](https://www.dhiwise.com/) — Seamlessly turn Figma designs into dynamic Flutter & React applications with DhiWise's innovative code generation technology, optimizing your workflow and helping you craft exceptional mobile and web experiences faster than ever before.
   * [Codeium](https://www.codeium.com/) — Codeium is a free AI-powered code completion tool. It supports over 20+ programming languages (Python, JavaScript, Java, TypeScript, PHP, C/C++, Go, etc) and integrates with all major standalone and web IDEs.
   * [tabnine.com](https://www.tabnine.com/) — Tabnine helps developers create better software, faster by providing insights learned from all the code in the world. Plugin available.
