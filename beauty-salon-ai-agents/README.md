@@ -2,6 +2,8 @@
 
 A ready-to-use team of 8 specialized [Claude Code subagents](https://docs.claude.com/en/docs/claude-code/sub-agents) built for one specific goal: **build a premium personal brand for a professional hair colorist in Austria and convert social media attention into real client bookings.** The agent definitions live in [`.claude/agents/`](../.claude/agents) at the repo root and are automatically available in any Claude Code session opened on this repository.
 
+For the step-by-step technical plan to actually run this system end to end — platform choice, tool/API integrations, orchestration, automation flow, and a launch checklist — see [`IMPLEMENTATION_PLAN.md`](IMPLEMENTATION_PLAN.md).
+
 This is not a generic beauty-salon content team. Every agent is scoped to:
 - **Positioning**: a premium, personal-brand hair colorist — not a generic salon account.
 - **Expertise**: professional color work (color correction, technique precision, formulation) as the core content pillar, not generic beauty tips.
