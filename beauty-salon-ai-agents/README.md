@@ -19,7 +19,7 @@ This is not a generic beauty-salon content team. Every agent is scoped to:
 | AI Social Media Manager | [`social-media-manager.md`](../.claude/agents/social-media-manager.md) | Monthly content calendars, platform strategy, trilingual (UA/DE/EN) captions, local-Austria hashtags |
 | AI Reels Video Creator | [`reels-video-creator.md`](../.claude/agents/reels-video-creator.md) | Video scripts, 3-second hooks, shot lists, text overlays, CapCut editing style |
 | AI Beauty Marketing Agent | [`marketing-strategist.md`](../.claude/agents/marketing-strategist.md) | Campaigns, offers, customer psychology, sales funnels, conversion-focused advertising |
-| AI Client Communication Agent | [`client-assistant.md`](../.claude/agents/client-assistant.md) | Client messaging, consultation support, booking, FAQs — German & Ukrainian first |
+| AI Client Manager & Business Optimization Agent | [`client-manager.md`](../.claude/agents/client-manager.md) | Client messaging, structured consultation, qualification, booking, feedback surveys, communication-process analysis, marketing feedback, time-optimization reports — the virtual salon administrator |
 | AI Brand Manager | [`brand-designer.md`](../.claude/agents/brand-designer.md) | Figma/Canva design system, Instagram aesthetics, premium visual identity |
 | AI Business Analyst | [`business-analyst.md`](../.claude/agents/business-analyst.md) | Content performance, client-source attribution, retention, monthly growth reports |
 
@@ -34,11 +34,14 @@ This is not a generic beauty-salon content team. Every agent is scoped to:
  read)                                                        (content is filmed & published)
                                                                      │
                                                                      ▼
- 6. BUSINESS ANALYST   ◀───── 5. CLIENT COMMUNICATION  ◀──── 4. BEAUTY MARKETING AGENT
+ 6. BUSINESS ANALYST   ◀───── 5. CLIENT MANAGER        ◀──── 4. BEAUTY MARKETING AGENT
  Monthly growth report,       Handles resulting DMs,         Campaigns/offers/funnels that turn
- attribution, retention,      consultations & bookings       attention into booked appointments
- feeds next cycle             in DE/UA/EN                    (trust-led, not discount-led)
-        │
+ attribution, retention,      consultation, qualification,   attention into booked appointments
+ feeds next cycle             booking, in DE/UA/EN           (trust-led, not discount-led)
+        │                            │
+        │                            └──▶ communication-process + marketing-feedback reports
+        │                                 feed Creative Director/Trend Hunter (content gaps)
+        │                                 and Marketing Agent (what actually converts)
         └──────────────────▶ back into Trend Hunter + Creative Director for the next cycle
 ```
 
@@ -48,8 +51,8 @@ Cutting across all of it: the **AI Brand Manager** reviews everything the Creati
 - **Creative Director** is the filter: nothing generic survives to reach the calendar.
 - **Social Media Manager** and **Reels Video Creator** turn approved concepts into publishable captions and shootable scripts, respectively.
 - **Marketing Agent** exists specifically to convert the resulting attention into consultations and bookings, using trust-led (not discount-led) funnels appropriate to a high-ticket, high-trust service.
-- **Client Communication Agent** handles the real conversations that follow, in the client's own language.
-- **Business Analyst** closes the loop — reporting not just "what happened" but which trend bets and which storytelling registers actually converted, feeding directly into the next Trend Hunter/Creative Director cycle.
+- **Client Manager & Business Optimization Agent** is the virtual salon administrator: it handles the real conversations that follow (in the client's own language), runs structured consultations, qualifies and preps clients before the colorist is involved, and produces its own communication-process, conversion, and time-optimization reports — feeding content gaps back to Creative Director/Trend Hunter and conversion signal to the Marketing Agent.
+- **Business Analyst** closes the loop — reporting not just "what happened" but which trend bets and which storytelling registers actually converted, rolling in the Client Manager's communication data, and feeding directly into the next Trend Hunter/Creative Director cycle.
 
 ## Skills, workflows, and integrations at a glance
 
@@ -60,7 +63,7 @@ Cutting across all of it: the **AI Brand Manager** reviews everything the Creati
 | Social Media Manager | Monthly calendars, platform strategy, trilingual captions, local hashtags | Instagram, Threads, TikTok, Notion/Airtable, Canva, WebSearch |
 | Reels Video Creator | Scripts, hooks, shot lists, text overlays, CapCut edit specs | CapCut, Descript, HyperFrames by HeyGen, Google Drive |
 | Beauty Marketing Agent | Campaigns, customer psychology, funnels, advertising strategy | CRM, Google Calendar, Analytics/Supermetrics, Instagram, TikTok, WebSearch |
-| Client Communication Agent | Trilingual messaging, consultation triage, booking, FAQs | Google Calendar, CRM |
+| Client Manager & Business Optimization Agent | Trilingual messaging, structured consultation, qualification, booking, feedback surveys, communication-process analysis, marketing feedback, time-optimization reporting | Instagram, website chat, Google Calendar, the existing CRM/client database, Gmail, Slack |
 | Brand Manager | Visual identity, design system, grid aesthetics | Figma, Canva, Google Drive |
 | Business Analyst | Performance attribution, retention analysis, growth reporting | CRM, Analytics/Supermetrics, Google Calendar, WebSearch |
 
@@ -74,19 +77,19 @@ Cutting across all of it: the **AI Brand Manager** reviews everything the Creati
 | CapCut | Reels Video Creator | Not yet connected — agent produces CapCut-ready edit specs today; direct CapCut automation requires a connector |
 | Canva | Creative Director, Social Media Manager, Brand Manager | **Live** (`mcp__Canva__*`) |
 | Figma | Brand Manager | **Live** (`mcp__Figma__*`) |
-| Google Calendar | Client Communication Agent, Marketing Agent, Business Analyst | **Live** (`mcp__Google_Calendar__*`) |
-| CRM | Marketing Agent, Client Communication Agent, Business Analyst | Not yet connected — use Airtable (`mcp__Airtable__*`) as an interim CRM/data store until a dedicated CRM connector is added |
+| Google Calendar | Client Manager Agent, Marketing Agent, Business Analyst | **Live** (`mcp__Google_Calendar__*`) |
+| CRM / client database | Marketing Agent, Client Manager Agent, Business Analyst | **Use the existing client database already in place — do not stand up a new one.** Once it's clear which system that is (Airtable, a booking platform's built-in client list, a spreadsheet, etc.), connect the matching connector here so agents read/write it directly instead of working from copy-pasted exports |
 | Analytics tools | Marketing Agent, Business Analyst | **Live** via Supermetrics Marketing Analytics (`mcp__Supermetrics_Marketing_Analytics__*`) |
 
 Agents are written to use each integration as soon as it's available; where a connector isn't wired up yet, the agent still produces the full deliverable (report, script, campaign brief) ready to execute manually or paste into the target tool.
 
 ## Using the agents
 
-Once this repo is open in Claude Code, each agent is invokable by name — e.g. "have the trend hunter pull this week's report," "creative director, turn this client story into a concept," "reels video creator, script this." Chain them in pipeline order (Trend Hunter → Creative Director → Social Media Manager → Reels Video Creator → Marketing Agent → Client Communication Agent → Business Analyst) for a full cycle in one request, or invoke any single agent standalone.
+Once this repo is open in Claude Code, each agent is invokable by name — e.g. "have the trend hunter pull this week's report," "creative director, turn this client story into a concept," "reels video creator, script this," "client manager, draft this week's communication report." Chain them in pipeline order (Trend Hunter → Creative Director → Social Media Manager → Reels Video Creator → Marketing Agent → Client Manager → Business Analyst) for a full cycle in one request, or invoke any single agent standalone. The Client Manager Agent also runs independently, any time, for incoming client messages — it isn't gated on the rest of the pipeline.
 
 ## A note on brand specifics
 
-These agents encode the **positioning** (premium personal brand, professional hair colorist, Austria market, trilingual DE/UA/EN, conversion-over-vanity-metrics) discussed in this session. They do not yet contain a saved brand-discovery document with exact studio name, price list, color palette hex codes, or portfolio links — drop those specifics into the relevant agent file (mainly Brand Manager for visual specifics, Client Communication Agent for FAQ/policy specifics) and every downstream agent will use them automatically.
+These agents encode the **positioning** (premium personal brand, professional hair colorist, Austria market, trilingual DE/UA/EN, conversion-over-vanity-metrics) discussed in this session. They do not yet contain a saved brand-discovery document with exact studio name, price list, color palette hex codes, or portfolio links — drop those specifics into the relevant agent file (mainly Brand Manager for visual specifics, Client Manager for FAQ/policy specifics) and every downstream agent will use them automatically. Likewise, tell the Client Manager Agent directly which system your existing client database lives in — it's built to use what's already there, not to replace it.
 
 ## Customizing
 
