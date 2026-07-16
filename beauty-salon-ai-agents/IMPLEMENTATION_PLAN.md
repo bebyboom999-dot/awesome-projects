@@ -48,7 +48,7 @@ Claude can write a script, a caption, or a trend report — it cannot, by itself
 | **Canva** | Templates, brand kit, on-brand asset generation | **Canva Connect API** (Autofill + Asset + Export endpoints) — already available in this workspace via the Canva MCP connector |
 | **Website** | Portfolio, booking entry point, SEO/discovery | Depends on your website platform (WordPress, Squarespace, Wix, custom). At minimum: embed the booking widget and a live Instagram feed; connect **Google Analytics 4** for traffic |
 | **Booking calendar** | Appointment scheduling | **Google Calendar API** (already available) for the underlying calendar, plus (recommended) a **salon-specific booking platform** — Fresha, Booksy, or Treatwell — layered on top for deposits/no-show protection/client-facing booking page, synced to Google Calendar |
-| **CRM** | Client history, retention, lead tracking | Start with **Airtable** (already available) as a lightweight CRM; migrate to a dedicated CRM only if/when Airtable's manual structure becomes a bottleneck |
+| **CRM / client database** | Client history, retention, lead tracking | **Use the existing client database already in place — do not create a new one.** Connect the Client Manager Agent to whatever system currently holds client records (a CRM, a booking platform's built-in client list, a spreadsheet). Airtable appears elsewhere in this plan only as the **Content Brief pipeline tracker** — a separate thing from client records |
 | **Analytics** | Content + campaign performance | Native insights (Meta Business Suite for IG/Threads, TikTok Analytics) + **Google Analytics 4** (website) aggregated through **Supermetrics** (already available) into one dashboard |
 
 ---
@@ -70,7 +70,7 @@ Set these up in roughly this order — later items often depend on earlier ones 
 8. **Canva account** — **Canva for Teams** (needed for Brand Kit + Brand Templates + the Autofill API used to generate on-brand assets programmatically) + a **Canva Developer app** for Connect API access.
 9. **Google account** for Calendar API — a Google Cloud project with the Calendar API enabled and OAuth credentials.
 10. **Booking platform account** (Fresha/Booksy/Treatwell) — check each platform's current partner/API access terms; some booking platforms restrict API access to certain tiers.
-11. **Airtable account** (Team plan recommended once you're relying on it as CRM + content tracker, for permissions/collaboration features).
+11. **Airtable account** (Team plan recommended for permissions/collaboration) — used as the **Content Brief pipeline tracker only**. Your client database is a separate, already-existing system; don't fold it into this Airtable base.
 12. **Google Analytics 4 property** for the website, plus **Meta Pixel** and **TikTok Pixel** installed on the booking page to close the loop between ad spend and bookings.
 13. **Supermetrics account**, connected to Meta, TikTok, and GA4 as data sources.
 14. **Anthropic API key** (console.anthropic.com) — this is what lets the automation platform (n8n/Make) call the Claude agents programmatically.
@@ -101,7 +101,7 @@ Content Brief (JSON/record) — created by Trend Hunter, enriched at every step
    - **Approval gate after Creative Director + Social Media Manager**, before scripting — a Slack message with Approve/Reject buttons (n8n supports this natively).
    - **Filming + CapCut editing is always human** — the workflow pauses and waits for a finished video file to appear in a designated Google Drive folder before continuing.
 4. Once a finished video lands in that Drive folder, the workflow resumes: publish via the Instagram/TikTok APIs (or queue for manual posting during the MVP phase — see Section 6), then move to monitoring.
-5. **Client Communication is not part of the linear chain** — it's a separate, always-on workflow triggered by webhooks (new DM, new comment, new booking-page inquiry), independent of the content pipeline's cadence.
+5. **The Client Manager Agent is not part of the linear chain** — it's a separate, always-on workflow triggered by webhooks (new DM, new comment, new booking-page inquiry), independent of the content pipeline's cadence. It reads/writes the existing client database directly, not the Content Brief.
 6. **Analytics + Business Analyst run on their own schedule** (nightly pull, monthly report), reading performance data back into the same Content Brief records so results are traceable to the original trend/concept.
 
 ---
@@ -136,9 +136,10 @@ Content Brief (JSON/record) — created by Trend Hunter, enriched at every step
 └─────────┬───────────┘
           ▼
 ┌───────────────────┐        ┌──────────────────────────────┐
-│ 5. CLIENT           │◀──────│ Webhook: new DM / comment /   │  (always-on, event-driven,
-│ COMMUNICATION        │       │ booking inquiry                │   runs independently of
-│ (Client Comm. Agent) │        └──────────────────────────────┘   the weekly content cycle)
+│ 5. CLIENT MANAGER   │◀──────│ Webhook: new DM / comment /   │  (always-on, event-driven,
+│ (comms, consultation,│       │ booking inquiry                │   runs independently of
+│ qualification,       │       └──────────────────────────────┘   the weekly content cycle)
+│ booking, surveys)    │
 └─────────┬───────────┘
           ▼
 ┌───────────────────┐
@@ -163,7 +164,7 @@ The single biggest risk to this project is trying to fully automate publishing b
 ### MVP (build first — target: running within 1-2 weeks)
 - Agent definitions in this repo (already done).
 - **Manual operation of the pipeline**: you (or a team member) runs each agent's prompt in Claude Code/Claude Projects in sequence — Trend Hunter → Creative Director → Social Media Manager → Reels Video Creator — no automation platform yet.
-- **Airtable** as the single Content Brief tracker + lightweight CRM.
+- **Airtable** as the Content Brief tracker only. Client records stay in whatever system you already use — the Client Manager Agent works from that directly, run manually in Claude Code/Projects for now.
 - **Google Calendar** for booking (manual booking flow via DM/website is fine at MVP).
 - **Canva + Figma** used directly (manual, not API) for templates and brand assets.
 - **CapCut** manual editing (this never changes, even post-MVP).
@@ -178,14 +179,14 @@ This gets real content published and real client conversations happening immedia
 - Automate the **scheduled agent calls** (Trend Hunter weekly, Business Analyst monthly) via the Anthropic API.
 - Once Meta/TikTok approvals clear: automate **publishing**.
 - Add the **Slack approval gate** so review happens without opening Airtable directly.
-- Automate **Client Communication Agent** replies via DM webhooks (draft-only at first — a human still hits send).
+- Automate **Client Manager Agent** replies via DM webhooks (draft-only at first — a human still hits send).
 - Connect **Supermetrics** for automated nightly analytics pulls, replacing manual logging.
 
 ### Phase 3 — scale (once the core loop is proven)
 - Automatic (not draft-only) client replies for FAQ-tier questions, with escalation rules for anything ambiguous.
 - Booking platform upgrade (Fresha/Booksy) if Google Calendar + manual booking starts creating friction (double-bookings, no-shows).
 - Marketing Agent-driven **paid ad campaigns** via the Meta Ads API/TikTok Ads Manager, tied to the same Content Brief and measured through the same analytics pipeline.
-- Dedicated CRM if Airtable's structure becomes limiting (e.g., you need automated retention/re-engagement sequences at volume).
+- Upgrade beyond your current client-record system only if it becomes genuinely limiting at volume (e.g., you need automated retention/re-engagement sequences it can't support) — this is a fallback, not a default step.
 - A Looker Studio (or similar) dashboard fed by Supermetrics, so the Business Analyst's monthly report becomes a live view instead of a manually-compiled one.
 
 ---
@@ -194,7 +195,8 @@ This gets real content published and real client conversations happening immedia
 
 **Phase 0 — Foundations**
 - [ ] Confirm brand specifics (studio name, price list, palette, portfolio) are filled into the relevant agent files (see the README's "A note on brand specifics").
-- [ ] Set up Airtable base: one table for the Content Brief pipeline, one for client/CRM records.
+- [ ] Confirm which existing system holds client records today (CRM, booking platform's client list, spreadsheet) and tell the Client Manager Agent — this plan connects to it, it does not replace it.
+- [ ] Set up an Airtable base for the Content Brief pipeline only (trend reports, concepts, calendar, scripts) — kept separate from client records.
 
 **Phase 1 — Accounts (start early, these have the longest lead time)**
 - [ ] Meta Business Manager account + Facebook Page + Instagram Professional account.
@@ -216,7 +218,7 @@ This gets real content published and real client conversations happening immedia
 - [ ] Film and edit the first video in CapCut by hand.
 - [ ] Brand Manager visual pass before publishing (manual review against brand guidelines).
 - [ ] Publish manually to Instagram/TikTok/Threads.
-- [ ] Client Communication Agent used manually to draft replies to the first resulting DMs/comments.
+- [ ] Client Manager Agent used manually to draft replies, run consultations, and prep client summaries for the first resulting DMs/comments — working from the existing client database.
 - [ ] Log first week's performance numbers into Airtable manually.
 - [ ] Run Business Analyst at the end of month one on that manually-logged data → first growth report.
 
@@ -226,12 +228,12 @@ This gets real content published and real client conversations happening immedia
 - [ ] Build the Creative Director + Social Media Manager workflow, ending in a Slack approval gate.
 - [ ] Build the Reels Video Creator workflow, ending in a "waiting for finished video" Drive-folder watcher.
 - [ ] Once Meta/TikTok API approvals are live: build the publishing workflow.
-- [ ] Build the Client Communication webhook workflow (draft-only replies to start).
+- [ ] Build the Client Manager webhook workflow (draft-only replies to start), reading/writing the existing client database directly.
 - [ ] Build the nightly Supermetrics → Airtable analytics pull.
 - [ ] Build the monthly Business Analyst workflow, closing the loop back into the next Trend Hunter run.
 
 **Phase 4 — Go live and iterate**
 - [ ] Run one full automated cycle end to end with a human checking every checkpoint.
 - [ ] Turn on auto-publishing once you trust the approval gate.
-- [ ] Turn on auto-send for Client Communication only after a few weeks of reviewing its draft-only replies.
+- [ ] Turn on auto-send for the Client Manager Agent only after a few weeks of reviewing its draft-only replies.
 - [ ] Review the first automated Business Analyst report and adjust Trend Hunter/Creative Director prompts based on what it says actually converted.
